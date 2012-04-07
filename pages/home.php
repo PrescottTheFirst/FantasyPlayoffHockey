@@ -17,7 +17,8 @@
 	<td><p align="center">Points</p></td>
     </tr>
 <?php
-	include_once "../data_access.php";	
+	include_once "../data_access.php";
+	require_once "../updatePoints.php";	
         session_start();
         if(!isset($_SESSION['loggedin']))
         {
@@ -27,6 +28,8 @@
             //-->
             </script> ";
         }
+
+	updatePoints();
 
 	$db = new DataAccess();
 	$users = $db->get_users();

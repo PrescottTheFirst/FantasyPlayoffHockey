@@ -21,7 +21,7 @@
 		}
 
 		function get_pick($matchid, $userid) {
-			$query = "SELECT pick, games, goal_diff FROM PICKS ";
+			$query = "SELECT pick, games, goal_diff, points FROM PICKS ";
 			$query .= " WHERE matchid = " . $matchid;
 			$query .= " AND userid = " . $userid;
 			return self::exec_query($query);
