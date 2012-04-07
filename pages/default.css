@@ -1,0 +1,41 @@
+
+P.Header {
+font-size : 20px;
+text-align : center;
+font-weight: bold ; 
+margin: 5px 5px 0px 0px;
+}
+
+P.subheader {
+font-size : 16px;
+text-align : center;
+font-weight: bold ; 
+margin: 5px 5px 0px 0px;
+}
+
+P.Error {
+	font-size : 20px;
+	text-align : center;
+	font-weight : bold;
+	color : #FF0000;
+}
+
+P.table-entry {
+	margin : 0px 0px 0px 0px;
+}
+
+P.winner {
+	color : #00FF00;
+	margin : 0px 0px 0px 0px;
+}
+
+Input.number {
+	width : 50px;
+}
+
+TD.games {
+	width : 20px;
+}
+
+table.main {
+}

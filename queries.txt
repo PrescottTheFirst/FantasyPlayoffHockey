@@ -1,0 +1,5 @@
+Get matchups by conference, year, round
+Get picks by matchup, user
+Get results by matchup
+Get password by username
+
