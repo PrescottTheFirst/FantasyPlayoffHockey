@@ -41,7 +41,7 @@
 		global $year;
 		$results = $db->get_matchups($round, $year);
 		$matchups = array();
-		while ($row = mysql_fetch_array($results)) {
+		while ($row = @mysql_fetch_array($results)) {
         		array_push($matchups, $row);
         	}
 		return $matchups;	
@@ -49,18 +49,18 @@
 
 	function get_pick($db, $matchid, $userid) {
 		$results = $db->get_picks($matchid, $userid);
-		return mysql_fetch_array($results);		
+		return @mysql_fetch_array($results);		
 	}
 	
 	function get_result($db, $matchid) {
 		$results = $db->get_results($matchid);
-		return mysql_fetch_array($results);	
+		return @mysql_fetch_array($results);	
 	}
 
 	function get_games($db, $matchid) {
 		$results = $db->get_games($matchid);
 		$games = array();
-		while ($row = mysql_fetch_array($results)) {
+		while ($row = @mysql_fetch_array($results)) {
 			array_push($games, $row);
 		}
 		return $games;

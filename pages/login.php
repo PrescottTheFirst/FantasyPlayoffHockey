@@ -1,3 +1,6 @@
+<?php
+	session_start();
+?>
 <html>
   <HEAD>
     <title>Fantasy Playoff Hockey</title>
@@ -21,13 +24,12 @@
                 <td><input type="password" name="password" maxlength="30"/></td>
            </tr>
 	   <tr><td colspan=2 align="center"><input type="submit" name="submit" value="Login"/></td></tr>
+	   <tr><td colspan=2 align="center"><a align="center" href="signup.php">Sign Up</a></td></tr>
 	   <tr>
 		<td colspan=2 align="center">
 		  <p class=Error>		
 <?php
 require_once "../account.php";
-
-session_start();
 if(isset($_SESSION['loggedin']))
 {
 echo " <script type=\"text/javascript\">

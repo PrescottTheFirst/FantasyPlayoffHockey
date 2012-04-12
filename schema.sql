@@ -5,6 +5,7 @@ CREATE TABLE USERS (
 	username varchar(20),
 	password varchar(50),
 	realname varchar(50),
+	ten_bucks varchar(3),
 	PRIMARY KEY (userid) 
 );
 

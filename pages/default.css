@@ -29,6 +29,10 @@ P.winner {
 	margin : 0px 0px 0px 0px;
 }
 
+a.topbar {
+	font-size : 16px;
+}
+
 Input.number {
 	width : 50px;
 }

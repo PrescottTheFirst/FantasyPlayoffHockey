@@ -1,3 +1,6 @@
+<?php
+        session_start();
+?>
 <html>
   <HEAD>
     <title>Fantasy Playoff Hockey</title>
@@ -5,7 +8,6 @@
   </HEAD>
 <body>
 <?php
-session_start();
 if(isset($_SESSION['loggedin']))
 {
     echo " <script type=\"text/javascript\">
@@ -74,11 +76,17 @@ if(isset($_SESSION['loggedin']))
 	function signup($username, $realname, $password, $repassword) {
 		$ok = validate($username, $realname, $password, $repassword);
 		if ($ok === "OK") {
-			$account = new Account($username, $realname, $password);
+			$account = new Account(mysql_escape_string($username), mysql_escape_string($realname), mysql_escape_string($password));
 			$account->make_account();
 			$ok = $account->string;
 			echo $OK;
-			if ($ok === "OK") echo "Account Created (Javascript to take to login page)";
+			if ($ok === "OK") {
+		        echo " <script type=\"text/javascript\">
+            <!--
+                window.location = \"login.php\"
+            //-->
+            </script> ";	
+			}
 			else echo $ok;
 		} else {
 			echo $ok;
