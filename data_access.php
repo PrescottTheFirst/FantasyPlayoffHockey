@@ -44,6 +44,19 @@
 			return self::exec_query($query);
 		}
 
+		function get_game_num($matchid) {
+			$query = " SELECT game_number FROM GAMES WHERE matchid = " . $matchid . " ORDER BY game_number Desc LIMIT 1";
+			$results = self::exec_query($query);
+			$row = mysql_fetch_array($results);
+			if ($row) return $row['game_number'];
+			else return 0;
+		}
+
+		function add_game($matchid, $game_num, $top_seed_score, $bottom_seed_score) {
+			$query = "INSERT INTO GAMES (date, matchid, game_number, top_seed_score, bottom_seed_score) VALUES (" . time() . "," . $matchid . "," . $game_num . "," . $top_seed_score . "," . $bottom_seed_score . ")";
+			self::exec_query($query);
+		}
+
 		function insert_pick($userid, $matchid, $pick, $games, $goal_diff) {
 			$query = "DELETE FROM PICKS WHERE userid = " . $userid . " AND matchid = " . $matchid;
 			self::exec_query($query);

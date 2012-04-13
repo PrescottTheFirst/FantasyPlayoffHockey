@@ -77,7 +77,7 @@
 <?php
 	$posts = $db->get_discussion_posts();
 	while ($post = mysql_fetch_array($posts)) {
-		echo "<tr><td><p align=\"center\"> " . $post['username'] . " " . $post['realname'] . "</p>";
+		echo "<tr><td><p align=\"center\"> " . $post['username'] . " -  " . $post['realname'] . "</p>";
 		echo "<p>" . $post['post'] . "</p></td><tr>";
 	}
 
