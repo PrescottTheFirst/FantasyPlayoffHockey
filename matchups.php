@@ -16,6 +16,7 @@
 		public $bottom_seed_team;
 		public $pick;
 		public $result;
+		public $round;
 		public $games;
 
 		function __construct($row) {
@@ -25,6 +26,7 @@
 			$this->top_seed_team = $row['top_seed_team'];
 			$this->bottom_seed_rank = $row['bottom_seed_rank'];
 			$this->bottom_seed_team = $row['bottom_seed_team'];
+			$this->round = $row['round'];
 		} 
 
 	}

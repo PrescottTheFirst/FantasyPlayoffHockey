@@ -6,18 +6,13 @@
     <?php
 	require_once "../data_access.php";
 	date_default_timezone_set('America/Toronto');
-	$start_of_round[1] = strtotime("04/11/2012 19:00:00");
-	$start_of_round[2] = strtotime("04/15/2012 19:00:00");
-	$start_of_round[3] = strtotime("04/15/2012 19:00:00");
-	$start_of_round[4] = strtotime("07/15/2012 19:00:00");
-	$date = time();
 
 	$db = new DataAccess();
 	$row = $db->get_current_round_and_year();
 	$round = $row['round'];
 	if ($round > 4) $round = 4;
 	$year = $row['year'];
-	if(!isset($_SESSION['loggedin']))
+	if(!isset($_SESSION['loggedin']) || ($_SESSION['name'] != 'Rob2'))
 	{
     	echo " <script type=\"text/javascript\">
             <!--
@@ -30,7 +25,7 @@
     <LINK href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <form id="picks-form" action="picks.php" method="POST">
+    <form id="picks-form" action="games.php" method="POST">
 	<h1 align="center">Fantasy Playoff Hockey</h1>
 <h2 align="center"><a class="topbar" href="home">Standings</a>
 <a class="topbar" href="picks">Make Picks</a>
@@ -38,15 +33,11 @@
 <a class="topbar" href="logout">Log Out</a></h2>
 	<table class="main" align="center">
 	    <tr><td colspan=8 align="center">
-	        <p class="Header" align="center">Make your Picks for Round <?php echo $round ?>
+	        <p class="Header" align="center">Add a Game for round  <?php echo $round ?>
 		 </p>
-		<tr><td colspan=8 align="center"><a align="center" href="scoring.php">Explanation of Scoring</a></td></tr>
-	    </td></tr>
 	    <tr>
 		<td colspan=3 align=center><p>Top Seed</p></td>
 		<td colspan=3 align=center><p>Bottom Seed</p></td>
-		<td colspan=1 align=center><p>Games</p></td>
-		<td colspan=1 align=center><p>Goal Diff</p></td>
 	    </tr>
 <?php
 	require_once "../matchups.php";
@@ -71,19 +62,13 @@
 		    <p class=\"table-entry\">" . $matchup->top_seed_rank . " " . $matchup->top_seed_team . "
 		</td>
 		<td colspan=1>
-		    <Input type=\"radio\" ". $topPick ." value=\"" . $matchup->top_seed_team . "_" . $matchup->matchid . "\" align=\"right\" name=\"pick".$matchup->matchid . "\"/></p>
+		    <Input type=\"text\" ". $topPick ." align=\"right\" name=\"top_" . $matchup->matchid . "\"/></p>
 		</td>
 		<td colspan=2>
 		    <p class=\"table-entry\">" . $matchup->bottom_seed_rank . " " . $matchup->bottom_seed_team . "
 		</td>
 		<td colspan=1>
-		    <input type=\"radio\" " . $bottomPick . " value=\"" . $matchup->bottom_seed_team . "_" . $matchup->matchid . "\" align=\"right\" name=\"pick" . $matchup->matchid . "\"/></p>
-		</td>
-		<td colspan=1>
-		    <input class=\"number\" type=\"integer\" name=\"games" . $matchup->matchid . "\" value=\"" . $_POST['games' . $matchup->matchid] . "\" MAXLENGTH=1/>
-		</td>
-		<td colspan=1>
-		    <input class=\"number\" type=\"integer\" name=\"goals" . $matchup->matchid . "\" value=\"" . $_POST['goals' . $matchup->matchid] . "\" MAXLENGTH=3/>	
+		    <input type=\"text\" " . $bottomPick . " align=\"right\" name=\"bottom_" . $matchup->matchid . "\"/></p>
 		</td>
 	    </tr>";
 	}
@@ -95,28 +80,23 @@
     </form>
 
 <?php
+	$matchups = $db->get_matchups($round, $year);
+	$count = 1;
         if (count($_POST) > 0) {
-		if ($date > $start_of_round[$round]) {
-			echo "<p class=\"Error\">Start of round " . $round . " has passed.</p>";
-		} elseif ($_SESSION['userid'] == 0) {
-			echo "<p class=\"Error\">You are a guest and cannot make picks</p>";
-		} 
-		else {
-			foreach ($_POST as $entry){
-				if (!intval($entry) && strlen($entry) > 2) {		
-					$array = explode("_",$entry);
-					$matchid = $array[1];
-					$pick = $array[0];
-					$games = $_POST['games' . $matchid];
-					$goal_diff = $_POST['goals' . $matchid];
-					if (!(intval($games)) || (!intval($goal_diff) && $goal_diff === 0) || ($games < 4) || ($games > 7)) {
-						echo "<p class=\"Error\"> Invalid Entry </p>";
-						break;
-					}
-					$userid = $_SESSION['userid'];
-					$db->insert_pick($userid, $matchid, $pick, $games, $goal_diff);
-				}
+		foreach ($_POST as $entry){
+			if ($count % 2) {
+				$match = mysql_fetch_array($matchups);
+				$top_seed_score = $entry;
+			} else {
+				$bottom_seed_score = $entry;
 			}
+			$matchid = $match['matchid'];
+			$gameNum = $db->get_game_num($matchid) + 1;
+		
+			if ((($count % 2) == 0) && is_numeric($top_seed_score) && is_numeric($bottom_seed_score)) {
+				$db->add_game($matchid, $gameNum, $top_seed_score, $bottom_seed_score); 
+			}
+			$count += 1;
 		}
 	}
 ?>

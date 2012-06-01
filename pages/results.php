@@ -143,7 +143,7 @@
 	}
 ?>
 <tr>
-    <td colspan=5></td><td><p align="center"> <?php echo $db->get_total_points($userid, $year); ?>
+    <td colspan=5></td><td><p align="center"> <?php echo $db->get_total_points($userid, $year, $round); ?>
     </td>
 </tr>
 </table>

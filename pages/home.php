@@ -45,7 +45,7 @@
 	$year = $row['year'];
 	$count = 0;
 	while ($user = @mysql_fetch_array($users)) {
-		$points = $db->get_total_points	($user['userid'], $year);
+		$points = $db->get_total_points	($user['userid'], $year, 0);
 		$tiebreaker=  $db->get_total_tie_breaker($user['userid'], $year);
 		$count += 1;
     	echo "
@@ -62,7 +62,7 @@
 ?>
 </table>
 </td>
-<td>
+<td colspan=1>
 <table border=1>
 <tr>
 <td>

@@ -25,7 +25,7 @@
 		}
 
 		function get_matchups($round, $year) {
-			$query = "SELECT matchid, top_seed_rank, top_seed_team, bottom_seed_rank, bottom_seed_team FROM MATCHUPS ";
+			$query = "SELECT matchid, top_seed_rank, top_seed_team, bottom_seed_rank, bottom_seed_team, round FROM MATCHUPS ";
 			$query .= " WHERE round = " . $round;
 			$query .= " AND year = '" . $year . "'";
 			$query .= " ORDER BY conference, top_seed_rank";
@@ -79,11 +79,12 @@
 			self::exec_query($query);
 		}
 
-		function get_total_points($userid, $year) {
+		function get_total_points($userid, $year, $round) {
 			$query = "SELECT sum(Points) as P FROM MATCHUPS, PICKS";
 			$query .= " WHERE MATCHUPS.matchid = PICKS.matchid";
 			$query .= " AND USERID = " . $userid;
 			$query .= " AND YEAR = '" . $year . "'";
+			if ($round > 0) $query .= " AND ROUND = " . $round;
 
 			$results = self::exec_query($query);
 			$row = @mysql_fetch_array($results);
